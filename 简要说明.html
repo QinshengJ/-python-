@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>简要说明</title>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+    <style>
+        :root {
+            --vscode-textCodeBlock-background: #c5c8cd;
+        }
+
+        body {
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+        }
+
+        pre:not(.hljs),
+        pre.hljs code>div {
+            padding: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="vscode-body vscode-light">
+    <h2 id="数据集说明">数据集说明</h2>
+    <ul>
+        <li>USPS 为较小规模的一个黑白图片集</li>
+        <li>MNIST 为较大规模的一个黑白图片集</li>
+        <li>mnist_m 为较大规模的一个彩色图片集，且带背景干扰</li>
+    </ul>
+    <h2 id="代码分支">代码分支</h2>
+    <h3 id="10-分类混合">10 分类（混合）</h3>
+    <h4 id="hybrid有模型无日志有关闭域自适应的对照模型">hybrid（有模型无日志；有关闭域自适应的对照模型）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">5</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">6</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 10 分类 USPS--&gt;MNIST 领域自适应经典量子混合神经网络</li>
+        <li>所包含的训练好的模型的参数信息来自吴师兄的原文件（原文件包中并无训练日志），准确率大约为 0.88</li>
+    </ul>
+    <h4 id="hybrid_mnist2mnistm训练时间很长">hybrid_mnist2mnistm（训练时间很长）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">5</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">6</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 10 分类 MNIST--&gt;mnist_m 领域自适应经典量子混合神经网络</li>
+        <li>采用这种方法时，由于 MNIST、mnist_m 数据集均较大，需要非常长的训练时间</li>
+        <li>所包含的训练好的模型准确率在 0.76 左右</li>
+        <li>理论上也可以裁剪数据集大小，效果未知</li>
+    </ul>
+    <h4 id="hybrid_usps2mnistm效果不佳">hybrid_usps2mnistm（效果不佳）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">5</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">6</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>10 分类 USPS--&gt;mnist_m 领域自适应经典量子混合神经网络</li>
+        <li>100 epochs 训练后基本稳定在 0.3 的准确率，难以正式使用</li>
+    </ul>
+    <h3 id="2-分类混合">2 分类（混合）</h3>
+    <h4 id="hybrid_binary进行33轮后由于效果极佳而停止训练有日志有关闭域自适应的对照模型">hybrid_binary（进行33轮后由于效果极佳而停止训练，有日志；有关闭域自适应的对照模型）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">2</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">2</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 2 分类 USPS--&gt;MNIST 领域自适应经典量子混合神经网络</li>
+        <li>所包含的训练好的模型准确率在 0.99 左右</li>
+        <li>可以在国盾 66 qubits 真实量子计算机上运行并得到较好效果</li>
+    </ul>
+    <h4 id="hybrid_binary_4layers训练完成">hybrid_binary_4layers（训练完成）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">2</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">4</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 2 分类 USPS--&gt;MNIST 领域自适应经典量子混合神经网络</li>
+        <li><strong>不能</strong>在国盾 66 qubits 真实量子计算机得到较好效果</li>
+        <li>可以在 IBM 物理机上运行并得到较好效果</li>
+        <li>考虑到 hybrid_binary 已经使用更简单的量子电路实现了极佳的效果，没有理由轻易使用该模型。然而，或许在该结构基础上支持彩色图片，会获得更高的准确率（当然，国盾平台下无法实际使用）。</li>
+    </ul>
+    <h4 id="hybrid_binary_rgb训练完成有关闭域自适应的对照模型">hybrid_binary_rgb（训练完成；有关闭域自适应的对照模型）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">2</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">2</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 2 分类 MNIST--&gt;mnist_m 领域自适应经典量子混合神经网络</li>
+        <li>所包含的训练好的模型准确率在 0.88 左右</li>
+        <li>可以在国盾 66 qubits 真实量子计算机上运行并得到较好效果</li>
+    </ul>
+    <h3 id="4-分类混合">4 分类（混合）</h3>
+    <h4 id="hybrid_quaternary_rgb训练完成">hybrid_quaternary_rgb（训练完成）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">4</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">3</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 4 分类 MNIST--&gt;mnist_m 领域自适应经典量子混合神经网络</li>
+        <li>似乎并不能在国盾 66 qubits 真实量子计算机上得到较好效果</li>
+    </ul>
+    <h4 id="hybrid_quaternary_2layers_rgb训练完成">hybrid_quaternary_2layers_rgb（训练完成）</h4>
+    <ul>
+        <li>强纠缠层超参：
+            <pre><code class="language-python">n_qubits = <span class="hljs-number">4</span> <span class="hljs-comment"># 量子比特数量</span>
+n_layers = <span class="hljs-number">2</span> <span class="hljs-comment"># 变分电路深度</span>
+</code></pre>
+        </li>
+        <li>提供了 4 分类 MNIST--&gt;mnist_m 领域自适应经典量子混合神经网络</li>
+        <li>测试效果不佳，准确率在 0.47 左右</li>
+    </ul>
+    <h3 id="2-分类全量子">2 分类（全量子）</h3>
+    <h4 id="fully_quantum进行36轮后由于效果极佳而停止训练有日志有关闭域自适应的对照模型">fully_quantum（进行36轮后由于效果极佳而停止训练，有日志；有关闭域自适应的对照模型）</h4>
+    <ul>
+        <li>提供了 2 分类 16x16 全振幅编码的全量子领域自适应（USPS--&gt;MNIST）神经网络</li>
+        <li>所包含的训练好的模型准确率在 0.98 左右</li>
+    </ul>
+    <h4 id="fully_quantum_wuenc搁置未提供">fully_quantum_wuenc（搁置，未提供）</h4>
+    <ul>
+        <li>提供了 2 分类 16x16 辅助比特编码方式的全量子领域自适应（USPS--&gt;MNIST）神经网络</li>
+        <li>效果不佳，暂时放弃，待辅助比特编码方式进化后可继续尝试</li>
+    </ul>
+    <h4 id="fully_quantum_rgb训练完毕">fully_quantum_rgb（训练完毕）</h4>
+    <ul>
+        <li>提供了 2 分类 3x16x16 全振幅编码的全量子领域自适应（MNIST--&gt;mnist_m）神经网络</li>
+        <li>准确率 0.74</li>
+    </ul>
+    <h2 id="运行平台">运行平台</h2>
+    <h3 id="总切换开关">总切换开关</h3>
+    <p>可修改 quantum_net.py 切换内的信息切换运行框架为 Pennylane、Qiskit、GuoDun。</p>
+    <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">QuantumBackend</span>(<span class="hljs-title class_ inherited__">Enum</span>):
+    Pennylane = <span class="hljs-number">1</span>
+    GuoDun = <span class="hljs-number">2</span>
+    Qiskit = <span class="hljs-number">3</span>
+
+
+<span class="hljs-comment"># 该变量指定当前的后端类型</span>
+current_quantum_backend = QuantumBackend.Pennylane
+</code></pre>
+    <h3 id="pennylane-框架指定设备">Pennylane 框架指定设备</h3>
+    <p>当切换到 Pennylane 框架时，请继续在 pennylane_feature_layer.py、pennylane_fc_layer.py 内修改 dev 变量选择所使用的设备<br>
+        Pennylane 可直接调用 IBM 量子云平台，但需要确保 pennylane-qiskit 包已安装。</p>
+    <pre><code class="language-python">dev = qml.device(<span class="hljs-string">&#x27;lightning.qubit&#x27;</span>, wires=n_qubits)
+<span class="hljs-comment"># 以下代码使用 IBM 量子平台，请确保 pennylane-qiskit 包已安装</span>
+<span class="hljs-comment"># simulator_mps 为 IBM 云端仿真设备，</span>
+<span class="hljs-comment"># 可修改为其它设备如 ibmq_quito、ibmq_manila 等以使用真实量子设备</span>
+<span class="hljs-comment"># dev = qml.device(&#x27;qiskit.ibmq&#x27;,</span>
+<span class="hljs-comment">#                  wires=n_qubits,</span>
+<span class="hljs-comment">#                  backend=&#x27;simulator_mps&#x27;,</span>
+<span class="hljs-comment">#                  ibmqx_token=&quot;&lt;请修改为您自己的 Token&gt;&quot;)</span>
+</code></pre>
+    <h3 id="注意事项">注意事项</h3>
+    <ol>
+        <li>建议不要使用云平台进行任何模型的训练，否则可能因为调用次数过多而造成积分耗尽、账号被封禁等问题。</li>
+        <li>IBM API 似乎会拒绝 CN 的 IP 直接访问，请配置好代理环境。</li>
+        <li>不建议频繁登录 IBM 后台，尤其是不建议频繁使用不同的代理节点登录后台，否则极易造成账号被封禁等问题。</li>
+        <li>代码内可能包含了有效的 Token，但请不要轻易使用，建议更换为自己的 Token。</li>
+    </ol>
+    <h2 id="环境准备">环境准备</h2>
+    <ul>
+        <li>PyTorch with CUDA support</li>
+        <li>Pennylane</li>
+        <li>Pennylane Qiskit Plugin （可选）</li>
+        <li>Qiskit （可选）</li>
+        <li>pyezQ （可选，国盾平台）</li>
+    </ul>
+    <h2 id="训练参数设置">训练参数设置</h2>
+    <p>修改 main.py 可切换是否开启领域自适应：</p>
+    <pre><code class="language-python">domain_adaptation_enabled = <span class="hljs-literal">True</span>
+</code></pre>
+    <h2 id="运行代码">运行代码</h2>
+    <ul>
+        <li>通过运行 <code>main.py</code> 进行训练</li>
+        <li>通过运行 <code>test.py</code> 可进行测试集的全量测试，并得到准确率</li>
+        <li>通过运行 <code>demo.py</code> 可进行可视化的效果展示</li>
+    </ul>
+    <p>运行 <code>test.py</code> 和 <code>demo.py</code> 时，程序将扫描 models 文件夹下的 *.pt 文件，并提示用户选择使用其中的具体某个模型：</p>
+    <blockquote>
+        <p>Found the following files of model parameters:</p>
+        <ol>
+            <li>hybrid_best.pt</li>
+            <li>hybrid_current.pt</li>
+        </ol>
+        <p>Choose a file (enter the corresponding number):</p>
+    </blockquote>
+    <p>请选择您需要使用的模型文件进行测试，通常为带有 best 的那个</p>
+
+
+
+</body>
+
+</html>
